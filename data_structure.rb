@@ -41,12 +41,8 @@ class MainData < BinData::Record
   uint32 :beamwidth
 end
 
-class EISData < BinData::Record
-#class Threat < BinData::Record
+class Threat < BinData::Record
   endian :little
-
-  uint32 :header1
-  uint32 :header2
 
   MainData :library
   MainData :measured
@@ -71,14 +67,16 @@ class EISData < BinData::Record
   int32 :second_jog_threshold
 end
 
-=begin
-class EISData_ < BinData::Record
+class EISData < BinData::Record
   endian :little
 
   uint32 :header1
   uint32 :header2
+#  string :length => 8
 
   Threat :threat1
-  Threat :threat2
+  #  array :unknown, :type => :uint8, :initial_length => 44
+  #string :length => 44
+  #Threat :threat2
+  #string :length => (16 * 4) + 4
 end
-=end
