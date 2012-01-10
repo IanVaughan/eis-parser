@@ -1,4 +1,4 @@
-#!/usr/lib/ruby
+#!/usr/bin/env ruby
 require 'bindata'
 require 'pp'
 
