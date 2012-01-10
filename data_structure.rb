@@ -72,11 +72,13 @@ class EISData < BinData::Record
 
   uint32 :header1
   uint32 :header2
-#  string :length => 8
+  #string :length => 8
 
   Threat :threat1
+
   #  array :unknown, :type => :uint8, :initial_length => 44
-  #string :length => 44
-  #Threat :threat2
+  string :length => 44
+
+  Threat :threat2
   #string :length => (16 * 4) + 4
 end
