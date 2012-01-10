@@ -2,24 +2,26 @@ require 'bindata'
 require './data_structure.rb'
 
 class Parser
+
   def self.parse filename
-    puts "Processing \"#{filename}\""
-    if File.exist?(filename)
-      if File.extname(filename) == '.ewscesm'
+    @filename = filename
+    puts "Processing \"#{@filename}\""
+    if File.exist?(@filename)
+      if File.extname(@filename) == '.ewscesm'
         puts "Found EIS file"
-        self.parse_eis(filename)
-      elsif File.extname(filename) == '.csv'
+        self.parse_eis
+      elsif File.extname(@filename) == '.csv'
         puts "Found csv file"
-        create_eis(filename)
+        create_eis
       end
     else
       puts "File not found!"
     end
   end
 
-  def self.parse_eis(input_filename)
+  def self.parse_eis
     ## Read file into memory
-    input_file = File.open(input_filename, 'rb')
+    input_file = File.open(@filename, 'rb')
     data = input_file.read
     input_file.close
 
@@ -31,13 +33,13 @@ class Parser
     #puts "freq max:#{parsed_data.library.freq_max}, min:#{parsed_data.library.freq_min}, code:#{parsed_data.library.freq_agility_code}"
     #puts "freq max:#{parsed_data.measured.freq_max}, min:#{parsed_data.measured.freq_min}, code:#{parsed_data.measured.freq_agility_code}"
 
-    puts parsed_data.snapshot
+    #puts parsed_data.snapshot
 
     #puts "Header #{r.header1}, #{r.header2}"
     #puts "Library :-"
     #puts "freq max:#{r.library.freq_max}, min:#{r.library.freq_min}, code:#{r.library.freq_agility_code}"
     #puts "freq max:#{r.measured.freq_max}, min:#{r.measured.freq_min}, code:#{r.measured.freq_agility_code}"
-    #pp r.snapshot
+    #pp parsed_data.snapshot
 
     ## debug
     #puts '-------------------------------'
@@ -53,14 +55,16 @@ class Parser
     reform.gsub!('}',"\n")
     #puts reform # debug/info
 
-    File.open(input_filename + '_out.csv', 'w') do |f|
+    output_file = @filename + '_out.csv'
+    File.open(output_file, 'w') do |f|
       f.puts reform
     end
+    puts "Created file : #{output_file}"
   end
 
-  def create_eis(input_filename)
+  def create_eis
     ## Read file into memory
-    input_file = File.open(input_filename, 'r')
+    input_file = File.open(@filename, 'r')
     data = input_file.read
     input_file.close
 
@@ -71,7 +75,7 @@ class Parser
     #  end
     parsed_data.threat1.library.freq_max = data.find("freq_max");
 
-    File.open(input_filename + '_out.ewscesm', 'wb') do |io|
+    File.open(@filename + '_out.ewscesm', 'wb') do |io|
       parsed_data.write(io)
     end
   end
